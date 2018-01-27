@@ -36,13 +36,7 @@ public class MathControllerTest {
 	
 	@Test
 	public void testAdd_POSTRequest() {
-		Map<String, String> requestBody = new HashMap<>();
-		requestBody.put("1", "20");
-		requestBody.put("2", "30");
-		
-		//given().port(port)
 		begin()
-		//.body(requestBody)
 		.parameters("1", "20", "2", "30")
 		.when()
 		.post("/math/add")
@@ -57,7 +51,20 @@ public class MathControllerTest {
 		.queryParam("n2", "25")
 		.expect().statusCode(422)
 		.when()
-		.get("/math/add");
+		.get("/math/add")
+		.then()
+		.body("error", equalTo("bad_param is not a valid numeric value"));
+	}
+	
+	@Test
+	public void testAdd_POSTRequest_InvalidParams() {
+		begin()
+		.parameters("1", "20", "2", "bad_param")
+		.expect().statusCode(422)
+		.when()
+		.post("/math/add")
+		.then()
+		.body("error", equalTo("bad_param is not a valid numeric value"));
 	}
 	
 	private RequestSpecification begin() {
