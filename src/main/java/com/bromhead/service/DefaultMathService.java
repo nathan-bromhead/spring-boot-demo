@@ -3,7 +3,9 @@ package com.bromhead.service;
 import java.math.BigDecimal;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DefaultMathService implements IMathService {
 
 	@Override
@@ -21,6 +23,4 @@ public class DefaultMathService implements IMathService {
 		if (!NumberUtils.isNumber(param))
 			throw new IllegalArgumentException(param + " is not a valid numeric value");
 	}
-	
-	
 }
