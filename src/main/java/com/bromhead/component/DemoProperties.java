@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DemoProperties {
 	
-	@Value("${timzoneKey}")
+	@Value("${timezoneKey}")
 	private String timezoneApiKey;
 
 	public String getTimezoneApiKey() {
