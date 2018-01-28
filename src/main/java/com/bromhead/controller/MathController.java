@@ -52,6 +52,10 @@ public class MathController {
 		return new ResponseEntity<IModel>(result, result.getResponseCode());
 	}
 	
+	/**
+	 * Validates the numeric values from the scary Internet. Some duplication of code here, as the service 
+	 * will make this check as well.
+	 */
 	private IModel validateParameters(String param1, String param2) {
 		IModel toReturn = null;
 
@@ -77,7 +81,8 @@ public class MathController {
 			toReturn = new MathModel(result, HttpStatus.OK);
 			
 		} catch (Exception e) {
-			
+			// A bit of a hassle, but check if the exception was an IllegalArgumentException. Having a separate
+			//	catch above the general Exception will not work.
 			if (e instanceof IllegalArgumentException)
 				toReturn = new ErrorModel(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 			else

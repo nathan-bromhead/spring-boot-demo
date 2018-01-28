@@ -5,13 +5,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DemoProperties {
-
+	
 	@Value("${timzoneKey}")
 	private String timezoneApiKey;
 
 	public String getTimezoneApiKey() {
 		return timezoneApiKey;
 	}
-	
-	
 }

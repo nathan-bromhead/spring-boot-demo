@@ -23,6 +23,7 @@ public class TimezoneController {
 	@GetMapping("/now")
 	public ResponseEntity<IModel>now() {
 		
+		// City code is just an example for the purposes of this demo
 		IModel response = getTimeZone("YYC");
 		
 		return new ResponseEntity<IModel>(response, response.getResponseCode());
