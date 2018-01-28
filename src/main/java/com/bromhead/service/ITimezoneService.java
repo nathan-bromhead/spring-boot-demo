@@ -1,11 +1,9 @@
 package com.bromhead.service;
 
-import com.bromhead.model.TimezoneModel;
+import com.bromhead.dto.TimezoneDto;
 
 public interface ITimezoneService {
 	
-	public TimezoneModel getTimeZone(String cityCode);
-		
-	
+	public TimezoneDto getTimeZone(String cityCode);
 
 }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bromhead.model.ErrorModel;
+import com.bromhead.model.IModel;
 import com.bromhead.model.MathModel;
 import com.bromhead.service.IMathService;
 
@@ -24,25 +27,49 @@ public class MathController {
 	private IMathService mathService;
 	
 	@GetMapping("/add")
-	public ResponseEntity<Object> add(@RequestParam String n1, @RequestParam String n2) {
+	public ResponseEntity<IModel> add(
+			@RequestParam String n1, 
+			@RequestParam String n2) {
 		
-		MathModel result = doAddRequest(n1, n2);
+		IModel result = validateParameters(n1, n2);
+
+		if (result == null)
+			result = doAddRequest(n1, n2);
 		
-		return new ResponseEntity<Object>(result, result.getResponseCode());
+		return new ResponseEntity<IModel>(result, result.getResponseCode());
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<Object> add(HttpServletRequest request,
+	public ResponseEntity<IModel> add(HttpServletRequest request,
 			@RequestParam(value="1", required=true) String n1,
 			@RequestParam(value="2", required=true) String n2) {
 		
-		MathModel result = doAddRequest(n1, n2);
+		IModel result = validateParameters(n1, n2);
 		
-		return new ResponseEntity<Object>(result, result.getResponseCode());
+		if (result == null)
+			result = doAddRequest(n1, n2);
+		
+		return new ResponseEntity<IModel>(result, result.getResponseCode());
 	}
 	
-	private MathModel doAddRequest(String param1, String param2) {
-		MathModel toReturn = null;
+	private IModel validateParameters(String param1, String param2) {
+		IModel toReturn = null;
+
+		if (!isParameterValid(param1))
+			toReturn = new ErrorModel(param1 + " is not a valid numeric value", HttpStatus.UNPROCESSABLE_ENTITY);
+
+		if (!isParameterValid(param2))
+			toReturn = new ErrorModel(param2 + " is not a valid numeric value", HttpStatus.UNPROCESSABLE_ENTITY);
+		
+		return toReturn;
+	}
+	
+	private boolean isParameterValid(String param) {
+		return NumberUtils.isNumber(param);
+	}
+	
+	private IModel doAddRequest(String param1, String param2) {
+		IModel toReturn = null;
 		
 		try {
 			
@@ -52,9 +79,9 @@ public class MathController {
 		} catch (Exception e) {
 			
 			if (e instanceof IllegalArgumentException)
-				toReturn = new MathModel(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+				toReturn = new ErrorModel(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 			else
-				toReturn = new MathModel("An unknown error has occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+				toReturn = new ErrorModel("An unknown error has occurred", HttpStatus.INTERNAL_SERVER_ERROR);
 		} 
 		
 		return toReturn;
