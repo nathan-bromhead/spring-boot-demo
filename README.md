@@ -23,3 +23,13 @@ For the timezonekey variable, you will need to aquire an api key from www.amdore
 
 ## Live Demo
 There is a live demo of this project at http://nathan-bromhead.us-east-2.elasticbeanstalk.com
+
+## Design Considrations
+* Although arguably overkill for just this demo, from a design standpoint it makes more sense to have the controllers depend only on interfaces, as opposed to concrete classes, for their respective functionality.
+* Same goes for the controllers returning instances of the IModel, although I'm breaking this rule slightly as the controllers do determine which implementation to return.
+
+## Future Considerations
+
+* API key storage: the project should use a solution like Valut to store the API key for the Timezone service - admittedly, the current solution of including when running it is a pain.
+* Docker: a docker file could be provided for running the solution - again, manually running it is not great, but due to my unfamiliarity with Docker, there was no time for this.
+* Caching: If the _time/now_ endpoint were to be extended for allowing city names/codes, and the timezone service was swapped to the Google API, I believe you could cache all the relevant information about a city's timezone (daylight savings and UTC offset) and simply make the calculation to return to the user, instead of making the external call. For the math endpoint, it find it tough to argue for caching, unless it was determined that some combination of parameters were being passed in on a regular basis, in which case you could cache the result.
