@@ -22,8 +22,8 @@ You can run the project using java -jar restful_service-0.0.1-SNAPSHOT.jar --tim
 For the timezonekey variable, you will need to aquire an api key from www.amdoren.com
 
 ## Live Demo
-There is a live demo of this project at http://nathan-bromhead.us-east-2.elasticbeanstalk.com
-
+There is a live demo of this project at http://nathan-bromhead.us-east-2.elasticbeanstalk.com  
+An identical version running in Docker can be found at http://ec2-13-59-231-80.us-east-2.compute.amazonaws.com
 ## Docker
 The following steps will run the application on a Docker instance:
 * Use the Dockerfile at the root of the project
